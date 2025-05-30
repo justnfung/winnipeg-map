@@ -1,14 +1,12 @@
 body {
   margin: 0;
-  overflow-x: hidden;
+  font-family: 'Cheltenham', serif
 }
-
 
 #map {
-  height: calc(100vh - 170px); /* adjust this value as needed */
+  height: 80vh;
   width: 100%;
 }
-
 
 .main-heading {
   text-align: center;
@@ -81,7 +79,7 @@ strong {
 }
 
 .leaflet-popup-content .popup-content div {
-  margin: 8px 0; /* previously 4px, now slightly more */
+  margin: 8px 0;
 }
 
 .leaflet-popup-content .popup-header {
@@ -129,9 +127,8 @@ strong {
 
 .subbar-links {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+  gap: 12px;
+  font-size: 14px;
 }
 
 .subbar-links a {
@@ -143,6 +140,7 @@ strong {
 .subbar-links a:hover {
   text-decoration: underline;
 }
+
 
 .last-updated {
   text-align: center;
@@ -164,7 +162,7 @@ strong {
   cursor: pointer;
   border-radius: 10px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  border: 2px solid #c2d8f5;
+  border: 1px solid #c2d8f5;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -190,47 +188,130 @@ strong {
   border-color: #a3c9ef;
 }
 
-@media (max-width: 600px) {
-  .main-heading {
-    font-size: 1.6em;
-    margin-top: 20px;
-  }
-
-  .last-updated {
-    font-size: 11px;
-    margin-top: -10px;
-    margin-bottom: 10px;
-  }
-
-  .subbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-  }
-
-  .legend {
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 10px;
-  }
-
-  .subbar-links {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
-  .submit-button,
-  .info-button {
-    width: 100%;
-    font-size: 14px;
-    padding: 10px;
-    text-align: center;
-  }
-
+/* Show resource list only on mobile */
+@media (max-width: 1000px) {
   #map {
-    height: calc(100vh - 270px); /* Adjust based on new header + stacked buttons */
+    height: 40vh !important;
   }
+  .mobile-resource-list {
+    max-height: 50vh;            /* or 40vh, etc. */
+    overflow-y: auto;             /* scroll when content exceeds */
+    -webkit-overflow-scrolling: touch;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-family: 'Cheltenham', serif;
+    font-size: 14px;
+    background-color: #fafafa;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .mobile-resource-list .list-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+
+  .mobile-resource-list .list-item:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-resource-list .list-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .mobile-resource-list strong {
+    display: block;
+    font-weight: 500;
+  }
+
+  .mobile-resource-list em {
+    color: #666;
+  }
+  .legend {
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 32px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.legend span {
+  font-size: 20px;
+}
+
+.subbar-links {
+  display: flex;
+  justify-content: center;     /* Center the row */
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.submit-button,
+.info-button {
+  font-size: 20px;
+  padding: 5px 30px;
+}
+.list-category {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  color: #003366;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ccc;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 36px;
+  font-weight: 800;
+  color: #003366;
+  padding: 16px 20px;
+  background-color: #e6f2ff;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+.category-header:hover {
+  background-color: #d0e9ff;
+}
+
+.category-icon {
+  width: 28px;
+  height: 42px;
+}
+
+.category-items {
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border-left: 2px solid #eee;
+  border-right: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+  border-radius: 0 0 12px 12px;
+  transition: max-height 0.2s ease-out;
+  overflow: hidden;
+}
+
+.category-items.collapsed {
+  display: none;
+}
+
+.list-item {
+  font-size: 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
 }
