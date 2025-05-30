@@ -111,15 +111,23 @@ function fetchResources() {
             const listItem = document.createElement("div");
             listItem.className = "list-item";
             listItem.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <style="font-size:20px; font-weight:600; flex: 1;">${name}</>
-              ${
-                distance != null
-                  ? `<span style="color:#666; font-size:15px; margin-left:12px; white-space: nowrap;">${distance.toFixed(1)} km</span>`
-                  : ""
-              }
-            </div>
-          `;
+              <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                padding: 10px 0;
+                font-size: 25px;
+                font-weight: 500;
+                line-height: 1.4;
+              ">
+                <span style="flex: 1; padding-right: 12px;">${name}</span>
+                ${
+                  distance != null
+                    ? `<span style="color: #666; font-size: 16px; white-space: nowrap;">${distance.toFixed(1)} km</span>`
+                    : ""
+                }
+              </div>
+            `;
             listItem.addEventListener("click", () => {
               map.setView(marker.getLatLng(), 17);
               marker.openPopup();
