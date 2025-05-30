@@ -6,8 +6,8 @@ const map = L.map("map").setView(DEFAULT_CENTER, DEFAULT_ZOOM);
 const isMobile = window.innerWidth <= 1000;
 
 
-const markerSize = isMobile ? [35, 55] : [25, 41];
-const shadowSize = isMobile ? [50, 50] : [41, 41];
+const markerSize = isMobile ? [20, 32] : [25, 41];
+const shadowSize = isMobile ? [27, 27] : [41, 41];
 const iconAnchor = isMobile ? [17, 55] : [12, 41];
 const popupAnchor = isMobile ? [1, -40] : [1, -34];
 
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           setTimeout(() => {
             map.invalidateSize();                    // ⬅️ force correct sizing
-            map.setView(userLocation, 15, { animate: true });
+            map.setView(userLocation, 13, { animate: true });
             userMarker.openPopup();
             fetchResources();                        // ⬅️ call AFTER view set
           }, 300);
