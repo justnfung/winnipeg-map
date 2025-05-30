@@ -1,7 +1,10 @@
-const isMobile = window.innerWidth <= 1000;
-const initialZoom = isMobile ? 15 : 12;
+const DEFAULT_CENTER = [49.8951, -97.1384];
+const DEFAULT_ZOOM = window.innerWidth <= 1000 ? 15 : 12;
 
-const map = L.map("map").setView([49.8951, -97.1384], initialZoom);
+const map = L.map("map").setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+
+const isMobile = window.innerWidth <= 1000;
+
 
 const markerSize = isMobile ? [35, 55] : [25, 41];
 const shadowSize = isMobile ? [50, 50] : [41, 41];
@@ -19,7 +22,6 @@ const markerIcons = {
   "Donation Point": "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
   "Medical Aid": "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
   "Animal Shelter": "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
-  "Info Station": "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
 };
 
 const icons = {};
@@ -44,8 +46,8 @@ function getDistanceKm(lat1, lon1, lat2, lon2) {
   const a =
     Math.sin(dLat / 2) ** 2 +
     Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2;
+    Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLon / 2) ** 2;
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
@@ -76,81 +78,83 @@ function fetchResources() {
             </div>
           `);
 
-          if (isMobile && listContainer) {
-            const dist = userLocation
-              ? getDistanceKm(userLocation[0], userLocation[1], lat, lng)
-              : null;
-            if (!grouped[category])
-              grouped[category] = { icon: markerIcon, items: [] };
-            grouped[category].items.push({ name: row.Name, marker, distance: dist });
-          }
+          if (!grouped[category])
+            grouped[category] = { icon: markerIcon, items: [] };
+
+          const distance = userLocation
+            ? getDistanceKm(userLocation[0], userLocation[1], lat, lng)
+            : null;
+
+          grouped[category].items.push({
+            name: row.Name,
+            marker,
+            distance,
+            address: row["Address"]
+          });
         }
       });
 
-      if (isMobile && listContainer) {
-        for (const [category, group] of Object.entries(grouped)) {
-          group.items.sort(
-            (a, b) => (a.distance || Infinity) - (b.distance || Infinity)
-          );
+      // Only insert tip if there’s grouped data
+      if (listContainer && Object.keys(grouped).length > 0) {
+        const tip = document.createElement("div");
+        tip.className = "sidebar-tip-top";
+        tip.textContent = "Click on any location for more details.";
+        listContainer.insertBefore(tip, listContainer.firstChild);
+      }
 
-          const section = document.createElement("div");
-          section.className = "category-section";
+      // Render each grouped category
+      for (const [category, group] of Object.entries(grouped)) {
+        group.items.sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
 
-          const header = document.createElement("div");
-          header.className = "category-header";
-          header.innerHTML = `
-            <img src="${group.icon}" alt="" class="category-icon">
-            <span>${category}</span>
-            <span style="margin-left:auto;font-size:20px;color:#003366;">Tap to collapse</span>
+        const section = document.createElement("div");
+        section.className = "category-section";
+
+        const header = document.createElement("div");
+        header.className = `category-header category-${category.replace(/\s+/g, '-').toLowerCase()}`;
+        header.innerHTML = `
+          <img src="${group.icon}" alt="" class="category-icon">
+          <span class="category-title">${category}</span>
+          <span class="collapse-toggle">Tap to collapse</span>
+        `;
+
+        const content = document.createElement("div");
+        content.className = "category-items";
+
+        group.items.forEach(({ name, marker, distance, address }) => {
+          const listItem = document.createElement("div");
+          listItem.className = "list-item";
+
+          listItem.innerHTML = `
+            <div class="resource-entry">
+              <div class="entry-top">
+                <span class="entry-name">${name}</span>
+                ${distance != null ? `<span class="entry-distance">${distance.toFixed(1)} km</span>` : ""}
+              </div>
+              ${address ? `<div class="entry-address">${address}</div>` : "<div class=\"entry-address\">Address unavailable</div>"}
+            </div>
           `;
 
-          const content = document.createElement("div");
-          content.className = "category-items";
-
-          group.items.forEach(({ name, marker, distance }) => {
-            const listItem = document.createElement("div");
-            listItem.className = "list-item";
-            listItem.innerHTML = `
-              <div style="
-                display: flex;
-                justify-content: space-between;
-                align-items: baseline;
-                padding: 10px 0;
-                font-size: 25px;
-                font-weight: 500;
-                line-height: 1.4;
-              ">
-                <span style="flex: 1; padding-right: 12px;">${name}</span>
-                ${
-                  distance != null
-                    ? `<span style="color: #666; font-size: 16px; white-space: nowrap;">${distance.toFixed(1)} km</span>`
-                    : ""
-                }
-              </div>
-            `;
-            listItem.addEventListener("click", () => {
-              map.setView(marker.getLatLng(), 17);
-              marker.openPopup();
-            });
-            content.appendChild(listItem);
+          listItem.addEventListener("click", () => {
+            map.setView(marker.getLatLng(), 17);
+            marker.openPopup();
           });
 
-          header.addEventListener("click", () =>
-            content.classList.toggle("collapsed")
-          );
+          content.appendChild(listItem);
+        });
 
-          section.appendChild(header);
-          section.appendChild(content);
-          listContainer.appendChild(section);
-        }
+        header.addEventListener("click", () => content.classList.toggle("collapsed"));
+
+        section.appendChild(header);
+        section.appendChild(content);
+        listContainer.appendChild(section);
       }
     });
 }
 
-// Wait for DOM before requesting location
 document.addEventListener("DOMContentLoaded", () => {
-  const locationPrompt = document.getElementById("location-request");
+  const overlay = document.getElementById("overlay");
   const enableBtn = document.getElementById("enable-location");
+  const declineBtn = document.getElementById("decline-location");
 
   if (navigator.geolocation) {
     enableBtn.addEventListener("click", () => {
@@ -166,19 +170,45 @@ document.addEventListener("DOMContentLoaded", () => {
             fillOpacity: 0.8,
           }).addTo(map).bindPopup("You are here");
 
-          locationPrompt.style.display = "none"; // Hide prompt
+          overlay.style.display = "none";
           fetchResources();
         },
         (err) => {
-          console.warn("Location denied or unavailable.");
-          locationPrompt.innerHTML = `<p style="color:darkred;">⚠️ Location access denied. Showing unsorted locations.</p>`;
+          console.warn("⚠️ Location access denied. Showing unsorted locations.");
+          overlay.style.display = "none";
           fetchResources();
         },
         { enableHighAccuracy: true }
       );
     });
+
+    declineBtn.addEventListener("click", () => {
+      overlay.style.display = "none";
+      fetchResources();
+    });
   } else {
-    locationPrompt.innerHTML = `<p>Your browser does not support geolocation.</p>`;
+    overlay.innerHTML = `<p>Your browser does not support geolocation.</p>`;
     fetchResources();
   }
 });
+
+// Add zoom out
+document.getElementById("zoom-out-btn").addEventListener("click", () => {
+  const currentZoom = map.getZoom();
+  const newZoom = Math.max(currentZoom - 2, 5); // Don't zoom out too far
+
+  const targetCenter = map.getCenter(); // ✅ Always use the current view center
+  map.setView(targetCenter, newZoom, { animate: true });
+});
+
+
+
+// Add recenter to user location
+document.getElementById("locate-btn").addEventListener("click", () => {
+  if (userLocation) {
+    map.setView(userLocation, 15);
+  } else {
+    alert("Location not available yet.");
+  }
+});
+

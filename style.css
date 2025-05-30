@@ -1,19 +1,26 @@
+/* =========================
+   Base Reset & Fonts
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
-  font-family: 'Cheltenham', serif
+  padding: 0;
+  height: 100%;
+  font-family: 'Cheltenham', serif;
+  font-weight: 300;
+  overscroll-behavior: contain;
 }
 
-#map {
-  height: 80vh;
-  width: 100%;
-}
-
-.main-heading {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 2.5em;
-  font-weight: 800; /* Use your Cheltenham 800 if desired */
-}
 
 @font-face {
   font-family: 'Cheltenham';
@@ -40,12 +47,9 @@ body {
   font-weight: 800;
 }
 
-/* Example usage */
-body {
-  font-family: 'Cheltenham', serif;
-  font-weight: 300;
-}
-
+/* =========================
+   Typography
+========================= */
 h1, h2 {
   font-weight: 800;
 }
@@ -54,47 +58,26 @@ strong {
   font-weight: 500;
 }
 
-/* Style Leaflet popup content with Cheltenham */
-.leaflet-popup-content {
-  font-family: 'Cheltenham', serif;
-  font-weight: 300;
-  font-size: 14px;
-  color: #222;
-  line-height: 1.4;
+.main-heading {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2.5em;
+  font-weight: 800;
 }
 
-.leaflet-popup-content strong {
-  font-weight: 500;
-  font-size: 16px;
-}
-
-.leaflet-popup-content em {
-  font-style: italic;
+.last-updated {
+  text-align: center;
+  font-size: 18px;
   color: #666;
+  font-style: italic;
+  margin-top: -20px;
+  margin-bottom: 20px;
 }
 
-.leaflet-popup-content a {
-  color: #007bff;
-  text-decoration: underline;
-}
-
-.leaflet-popup-content .popup-content div {
-  margin: 8px 0;
-}
-
-.leaflet-popup-content .popup-header {
-  margin-bottom: 10px;
-}
-
-.leaflet-popup-content img {
-  margin-top: 8px;
-}
-
+/* =========================
+   Subbar & Buttons
+========================= */
 .subbar {
-  font-family: 'Cheltenham', serif;
-  font-style: regular;
-  font-weight: 500;
-  /* existing styles */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -131,27 +114,7 @@ strong {
   font-size: 14px;
 }
 
-.subbar-links a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.subbar-links a:hover {
-  text-decoration: underline;
-}
-
-
-.last-updated {
-  text-align: center;
-  font-size: 18px;
-  color: #666;
-  font-family: 'Cheltenham', serif;
-  font-style: italic;
-  margin-top: -20px;
-  margin-bottom: 20px;
-}
-
+.subbar-links a,
 .submit-button,
 .info-button {
   font-family: 'Cheltenham', serif;
@@ -161,12 +124,12 @@ strong {
   font-size: 14px;
   cursor: pointer;
   border-radius: 10px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   border: 1px solid #c2d8f5;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
 }
 
-/* Deep blue submit */
 .submit-button {
   background-color: #007bff;
   color: white;
@@ -177,7 +140,6 @@ strong {
   background-color: #005edb;
 }
 
-/* Light blue info buttons */
 .info-button {
   background-color: #e0f0ff;
   color: #0056c9;
@@ -188,130 +150,385 @@ strong {
   border-color: #a3c9ef;
 }
 
-/* Show resource list only on mobile */
-@media (max-width: 1000px) {
-  #map {
-    height: 40vh !important;
-  }
-  .mobile-resource-list {
-    max-height: 50vh;            /* or 40vh, etc. */
-    overflow-y: auto;             /* scroll when content exceeds */
-    -webkit-overflow-scrolling: touch;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-family: 'Cheltenham', serif;
-    font-size: 14px;
-    background-color: #fafafa;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .mobile-resource-list .list-item {
-    padding: 16px 0;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-  }
-
-  .mobile-resource-list .list-item:last-child {
-    border-bottom: none;
-  }
-
-  .mobile-resource-list .list-item:hover {
-    background-color: #f0f0f0;
-  }
-
-  .mobile-resource-list strong {
-    display: block;
-    font-weight: 500;
-  }
-
-  .mobile-resource-list em {
-    color: #666;
-  }
-  .legend {
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 32px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.legend span {
-  font-size: 20px;
-}
-
-.subbar-links {
+/* =========================
+   Layout and Map
+========================= */
+body {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;     /* Center the row */
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
+}
+
+.map-area {
+  flex: 1;
+  height: calc(100vh - 120px); /* slightly less than before */
+  display: flex;
+  overflow: hidden;
+}
+
+
+
+.map-container {
+  display: flex;
+  height: 100%;
   width: 100%;
-  margin-top: 10px;
+  position: relative;
+  overflow: auto; /* Ensures map doesn't shift */
 }
 
-.submit-button,
-.info-button {
-  font-size: 20px;
-  padding: 5px 30px;
-}
-.list-category {
-  font-size: 18px;
-  font-weight: 800;
-  margin-top: 16px;
-  margin-bottom: 8px;
-  color: #003366;
-  text-transform: uppercase;
-  border-bottom: 1px solid #ccc;
+#map {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
 }
 
+.resource-list {
+  width: 400px;
+  max-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #fafafa;
+  border-left: 2px solid #ccc;
+  font-family: 'Cheltenham', serif;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: -2px 0 4px rgba(0,0,0,0.05);
+}
+
+.sidebar-tip {
+  background: #efefef;
+  color: #333;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-style: italic;
+  border-bottom: 1px solid #ddd;
+}
+
+/* =========================
+   Resource Entries
+========================= */
 .category-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  font-size: 36px;
-  font-weight: 800;
-  color: #003366;
+  gap: 8px;
   padding: 16px 20px;
-  background-color: #e6f2ff;
-  border: 2px solid #007bff;
-  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
   cursor: pointer;
-  margin-top: 16px;
+  border-top: 4px solid rgba(255, 255, 255, 0.3); /* separator */
 }
 
-.category-header:hover {
-  background-color: #d0e9ff;
+/* Optional: tighter spacing between icon and text */
+.category-icon {
+  width: 18px;
+  height: 28px;
+  flex-shrink: 0;
 }
+
+
+.category-emergency-shelter { background-color: #d9534f; }
+.category-donation-point { background-color: #5cb85c; }
+.category-medical-aid { background-color: #5bc0de; }
+.category-animal-shelter { background-color: #f0ad4e; }
+.category-info-station { background-color: #f7a35c; }
 
 .category-icon {
-  width: 28px;
-  height: 42px;
+  width: 16px;
+  height: 26px;
 }
 
-.category-items {
-  padding: 16px 20px;
-  background-color: #ffffff;
-  border-left: 2px solid #eee;
-  border-right: 2px solid #eee;
-  border-bottom: 2px solid #eee;
-  border-radius: 0 0 12px 12px;
-  transition: max-height 0.2s ease-out;
-  overflow: hidden;
+.collapse-toggle {
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: auto;
+  color: #fdfdfd;
+  opacity: 0.8;
 }
 
 .category-items.collapsed {
   display: none;
 }
 
-.list-item {
-  font-size: 24px;
-  padding: 14px 0;
-  border-bottom: 1px solid #ccc;
+.resource-entry {
+  padding: 14px 20px;
+  border-bottom: 1px solid #e2e2e2;
+  background: #fff;
+  transition: background 0.2s ease;
 }
 
-.list-item:last-child {
-  border-bottom: none;
+.resource-entry:hover {
+  background-color: #f9f9f9;
 }
 
+.entry-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+}
+
+.entry-distance {
+  font-size: 13px;
+  color: #888;
+  margin-left: 8px;
+}
+
+.entry-address {
+  font-size: 13px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.sidebar-tip-top {
+  background-color: #eeeeee;
+  color: #444;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-style: italic;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+
+/* =========================
+   Leaflet Popups
+========================= */
+.leaflet-popup-content {
+  font-family: 'Cheltenham', serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: #222;
+  line-height: 1.4;
+}
+
+.leaflet-popup-content strong {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.leaflet-popup-content em {
+  font-style: italic;
+  color: #666;
+}
+
+.leaflet-popup-content a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.leaflet-popup-content .popup-content div {
+  margin: 8px 0;
+}
+
+.leaflet-popup-content .popup-header {
+  margin-bottom: 10px;
+}
+
+.leaflet-popup-content img {
+  margin-top: 8px;
+}
+
+/* =========================
+   Modal Overlay
+========================= */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Cheltenham', serif;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 450px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-header img {
+  width: 48px;
+  height: 48px;
+}
+
+.modal-header h2 {
+  font-size: 22px;
+  color: #a60000;
+  margin: 0;
+}
+
+.modal-description {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.location-btn {
+  font-family: 'Cheltenham', serif;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: 0.2s ease;
+  min-width: 160px;
+}
+
+.location-btn.primary {
+  background-color: #007bff;
+  color: white;
+  border-color: #006fe6;
+}
+
+.location-btn.primary:hover {
+  background-color: #005edb;
+}
+
+.location-btn.secondary {
+  background-color: #fff;
+  color: #555;
+}
+
+.location-btn.secondary:hover {
+  background-color: #eee;
+}
+
+.map-buttons #zoom-out-btn {
+  background-color: #eee;
+  color: #333;
+  border: 2px solid #666;
+}
+
+.map-buttons #zoom-out-btn:hover {
+  background-color: #ddd;
+}
+
+.map-buttons {
+  position: absolute;
+  bottom: 30px;      /* was top: 100px — now bottom */
+  left: 30px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.map-buttons button {
+  font-family: 'Cheltenham', serif;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 8px 10px;
+  background: #ffffff;           /* brighter background */
+  border: 2px solid #555;        /* darker border */
+  border-radius: 6px;
+  color: #222;                   /* darker text */
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: background 0.2s ease;
+}
+
+.map-buttons button:hover {
+  background: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .main-heading {
+    font-size: 1.5em;
+    margin-top: 20px;
+  }
+
+  .subbar-links button,
+  .submit-button,
+  .info-button {
+    font-size: 10px;
+    padding: 6px 8px;
+  }
+    .last-updated {
+    font-size: 12px; /* 👈 Change this to whatever size you want */
+    margin-top: -10px; /* Optional: tweak spacing for smaller screens */
+    margin-bottom: 10px;
+  }
+
+  .legend span {
+    font-size: 10px;
+    font-weight: 500;
+    font-style: italic;
+    padding-bottom: 10px;
+  }
+  .legend img {
+  width: 8px;
+  height: 10px;
+  margin-right: 4px;
+  }
+  .map-buttons button {
+    font-size: 16px;
+    padding: 6px 8px;
+  }
+
+  .modal {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .modal-header h2 {
+    font-size: 18px;
+  }
+
+  .location-btn {
+    font-size: 14px;
+    padding: 8px 14px;
+    min-width: 120px;
+  }
+  .map-area {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .map-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  #map {
+    height: 45vh !important;
+    min-height: 300px;
+  }
+
+  .resource-list {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    overflow-y: auto;
+    border-left: none;
+    border-top: 2px solid #ccc;
+    box-shadow: none;
+  }
 }
