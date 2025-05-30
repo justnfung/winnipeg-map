@@ -1,0 +1,31 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Winnipeg Community Resource Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 class="main-heading">Community Resources in Winnipeg</h1>
+
+  <div class="subbar">
+    <div class="legend">
+      <span><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png"> Emergency Shelter</span>
+      <span><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png"> Donation Point</span>
+      <span><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png"> Medical Aid</span>
+      <span><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png"> Animal Shelter</span>
+      <span><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png"> Info Station</span>
+    </div>
+    <div class="subbar-links">
+      <a href="https://donate.redcross.ca/" target="_blank">Donate</a>
+      <a href="https://www.gov.mb.ca/wildfire/" target="_blank">Wildfire Resources</a>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="map.js"></script>
+</body>
+</html>

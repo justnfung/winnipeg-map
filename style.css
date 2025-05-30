@@ -1,0 +1,146 @@
+body {
+  margin: 0;
+  font-family: 'Cheltenham', serif
+}
+
+#map {
+  height: 83vh;
+  width: 100%;
+}
+
+.main-heading {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2.5em;
+  font-weight: 800; /* Use your Cheltenham 800 if desired */
+}
+
+
+@font-face {
+  font-family: 'Cheltenham';
+  src: url('fonts/cheltenham-normal-300.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Cheltenham';
+  src: url('fonts/cheltenham-normal-500.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Cheltenham';
+  src: url('fonts/cheltenham-normal-800.ttf') format('truetype');
+  font-weight: 800;
+}
+
+/* Example usage */
+body {
+  font-family: 'Cheltenham', serif;
+  font-weight: 300;
+}
+
+h1, h2 {
+  font-weight: 800;
+}
+
+strong {
+  font-weight: 500;
+}
+
+/* Style Leaflet popup content with Cheltenham */
+.leaflet-popup-content {
+  font-family: 'Cheltenham', serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: #222;
+  line-height: 1.4;
+}
+
+.leaflet-popup-content strong {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.leaflet-popup-content em {
+  font-style: italic;
+  color: #666;
+}
+
+.leaflet-popup-content a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.leaflet-popup-content .popup-content div {
+  margin: 8px 0; /* previously 4px, now slightly more */
+}
+
+.leaflet-popup-content .popup-header {
+  margin-bottom: 10px;
+}
+
+.leaflet-popup-content img {
+  margin-top: 8px;
+}
+
+.subbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: #f2f2f2;
+  padding: 10px 20px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.legend img {
+  width: 16px;
+  height: 25px;
+  margin-right: 6px;
+}
+
+.subbar-links {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.subbar-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.subbar-links a:hover {
+  text-decoration: underline;
+}
+
+/* Optional: keep it compact on small screens */
+@media (max-width: 600px) {
+  .subbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .subbar-links {
+    justify-content: flex-start;
+  }
+}
+
