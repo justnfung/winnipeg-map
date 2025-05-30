@@ -129,8 +129,9 @@ strong {
 
 .subbar-links {
   display: flex;
-  gap: 12px;
-  font-size: 14px;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
 .subbar-links a {
@@ -141,19 +142,6 @@ strong {
 
 .subbar-links a:hover {
   text-decoration: underline;
-}
-
-/* Optional: keep it compact on small screens */
-@media (max-width: 600px) {
-  .subbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .subbar-links {
-    justify-content: flex-start;
-  }
 }
 
 .last-updated {
@@ -200,4 +188,49 @@ strong {
 .info-button:hover {
   background-color: #d0e9ff;
   border-color: #a3c9ef;
+}
+
+@media (max-width: 600px) {
+  .main-heading {
+    font-size: 1.6em;
+    margin-top: 20px;
+  }
+
+  .last-updated {
+    font-size: 11px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+
+  .subbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .subbar-links {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .submit-button,
+  .info-button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  #map {
+    height: calc(100vh - 270px); /* Adjust based on new header + stacked buttons */
+  }
 }
