@@ -101,7 +101,7 @@ function fetchResources() {
           header.innerHTML = `
             <img src="${group.icon}" alt="" class="category-icon">
             <span>${category}</span>
-            <span style="margin-left:auto;font-size:14px;color:#003366;">Click to collapse</span>
+            <span style="margin-left:auto;font-size:20px;color:#003366;">Tap to collapse</span>
           `;
 
           const content = document.createElement("div");
@@ -111,15 +111,15 @@ function fetchResources() {
             const listItem = document.createElement("div");
             listItem.className = "list-item";
             listItem.innerHTML = `
-              <strong>${name}</strong>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <style="font-size:20px; font-weight:600; flex: 1;">${name}</>
               ${
                 distance != null
-                  ? `<span style="float:right;color:#888;font-size:13px;">${distance.toFixed(
-                      1
-                    )} km</span>`
+                  ? `<span style="color:#666; font-size:15px; margin-left:12px; white-space: nowrap;">${distance.toFixed(1)} km</span>`
                   : ""
               }
-            `;
+            </div>
+          `;
             listItem.addEventListener("click", () => {
               map.setView(marker.getLatLng(), 17);
               marker.openPopup();
