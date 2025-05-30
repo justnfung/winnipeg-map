@@ -65,19 +65,18 @@ function fetchResources() {
         const markerIcon = markerIcons[category] || markerIcons["Emergency Shelter"];
 
         if (!isNaN(lat) && !isNaN(lng)) {
-          const marker = L.marker([lat, lng], { icon }).addTo(map).bindPopup(`
-            <div class="popup-content">
-              <div class="popup-header">
-                <strong>${row.Name}</strong><br>
-                <em>${row.Category}</em>
+            const marker = L.marker([lat, lng], { icon }).addTo(map).bindPopup(`
+              <div class="popup-content">
+                <div class="popup-header">
+                  <strong>${row.Name}</strong><br>
+                  <em>${row.Category}</em>
+                </div>
+                ${row.Hours ? `<div><b>Hours:</b> ${row.Hours}</div>` : ""}
+                ${row.Description ? `<div><b>Description:</b> ${row.Description}</div>` : ""}
+                ${row["Address Link"] ? `<div><b>Address:</b> ${row["Address Link"]}</div>` : ""}
+                ${row.Phone ? `<div><b>Phone:</b> ${row.Phone}</div>` : ""}
               </div>
-              ${row.Hours ? `<div><b>Hours:</b> ${row.Hours}</div>` : ""}
-              ${row.Description ? `<div><b>Description:</b> ${row.Description}</div>` : ""}
-              ${row["Address Link"] ? `<div><b>Address:</b> ${row["Address Link"]}</div>` : ""}
-              ${row.Phone ? `<div><b>Phone:</b> ${row.Phone}</div>` : ""}
-            </div>
-          `);
-
+            `);
           if (!grouped[category])
             grouped[category] = { icon: markerIcon, items: [] };
 
@@ -114,7 +113,7 @@ function fetchResources() {
         header.innerHTML = `
           <img src="${group.icon}" alt="" class="category-icon">
           <span class="category-title">${category}</span>
-          <span class="collapse-toggle">Tap to collapse</span>
+          <span class="collapse-toggle">Click to collapse</span>
         `;
 
         const content = document.createElement("div");
@@ -161,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           userLocation = [pos.coords.latitude, pos.coords.longitude];
-          L.circleMarker(userLocation, {
+          const userMarker = L.circleMarker(userLocation, {
             radius: 8,
             fillColor: "#007bff",
             color: "#007bff",
@@ -171,7 +170,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }).addTo(map).bindPopup("You are here");
 
           overlay.style.display = "none";
-          fetchResources();
+
+          setTimeout(() => {
+            map.invalidateSize();                    // ⬅️ force correct sizing
+            map.setView(userLocation, 10, { animate: true });
+            userMarker.openPopup();
+            fetchResources();                        // ⬅️ call AFTER view set
+          }, 300);
         },
         (err) => {
           console.warn("⚠️ Location access denied. Showing unsorted locations.");
@@ -192,6 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
 // Add zoom out
 document.getElementById("zoom-out-btn").addEventListener("click", () => {
   const currentZoom = map.getZoom();
@@ -210,5 +216,10 @@ document.getElementById("locate-btn").addEventListener("click", () => {
   } else {
     alert("Location not available yet.");
   }
+});
+
+//Contact button
+  document.getElementById("contact-btn").addEventListener("click", () => {
+  window.location.href = "mailto:justinfung.ca@gmail.com?subject=Community%20Compass%20Inquiry";
 });
 

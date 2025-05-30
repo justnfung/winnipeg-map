@@ -249,9 +249,17 @@ body {
   opacity: 0.8;
 }
 
-.category-items.collapsed {
-  display: none;
+.category-items {
+  max-height: 1000px; /* big enough to contain most content */
+  overflow: hidden;
+  transition: max-height 0.4s ease;
 }
+
+.category-items.collapsed {
+  max-height: 0;
+  padding: 0;
+}
+
 
 .resource-entry {
   padding: 14px 20px;
@@ -366,8 +374,8 @@ body {
 }
 
 .modal-header img {
-  width: 48px;
-  height: 48px;
+  width: 54px;
+  height: 54px;
 }
 
 .modal-header h2 {
@@ -467,7 +475,7 @@ body {
   .submit-button,
   .info-button {
     font-size: 10px;
-    padding: 6px 8px;
+    padding: 4px 8px;
   }
     .last-updated {
     font-size: 12px; /* 👈 Change this to whatever size you want */

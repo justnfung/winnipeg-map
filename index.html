@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="icon" href="/assets/favicon.png" type="image/png">
+
   <title>Winnipeg Community Compass</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css">
+  <meta name="description" content="An interactive map of emergency shelters, donation points, and community resources in Winnipeg.">
+
 </head>
 <body>
   <h1 class="main-heading">Winnipeg Community Compass</h1>
@@ -20,14 +24,15 @@
     <div class="subbar-links">
       <button onclick="window.open('https://forms.gle/ij36mcaHji2tW6AT8', '_blank')" class="submit-button">+ Submit a Resource</button>
       <button onclick="window.open('https://give.redcross.ca/page/25MWA?_lang=en', '_blank')" class="info-button">♥ Red Cross Donations</button>
-      <button onclick="window.open('https://www.gov.mb.ca/wildfire/', '_blank')" class="info-button">ℹ Wildfire Resources</button>
+      <button onclick="window.open('https://www.gov.mb.ca/wildfire/', '_blank')" class="info-button">ⓘ Wildfire Resources</button>
+      <button id="contact-btn" class="info-button"> Contact</button>
     </div>
   </div>
     
   <div id="overlay" class="overlay">
     <div class="modal">
       <div class="modal-header">
-        <img src="https://vectorflags.s3.amazonaws.com/flags/ca-mb-heart-01.png" alt="location icon" />
+        <img src="/assets/hires_heart_border.png" alt="location icon" />
         <h2>Want to Find Help Near You?</h2>
       </div>
       <p class="modal-description">
