@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           setTimeout(() => {
             map.invalidateSize();                    // ⬅️ force correct sizing
-            map.setView(userLocation, 10, { animate: true });
+            map.setView(userLocation, 15, { animate: true });
             userMarker.openPopup();
             fetchResources();                        // ⬅️ call AFTER view set
           }, 300);
