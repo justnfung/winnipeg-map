@@ -6,7 +6,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
   maxZoom: 19
 }).addTo(map);
 
-
 const icons = {
   "Emergency Shelter": L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',

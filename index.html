@@ -1,13 +1,15 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Winnipeg Community Resource Map</title>
+  <title>Winnipeg Community Compass</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1 class="main-heading">Community Resources in Winnipeg</h1>
+  <h1 class="main-heading">Winnipeg Community Compass</h1>
+
+  <!-- 🕒 Auto-generated last updated -->
+  <div id="last-updated" class="last-updated"></div>
 
   <div class="subbar">
     <div class="legend">
@@ -18,12 +20,30 @@
       <span><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png"> Info Station</span>
     </div>
     <div class="subbar-links">
-      <a href="https://donate.redcross.ca/" target="_blank">Donate</a>
-      <a href="https://www.gov.mb.ca/wildfire/" target="_blank">Wildfire Resources</a>
+      <button onclick="window.open('https://forms.gle/ij36mcaHji2tW6AT8', '_blank')" class="submit-button">
+        + Submit a Resource
+      </button>
+      <button onclick="window.open('https://donate.redcross.ca/', '_blank')" class="info-button">
+        ♥ Red Cross Donations
+      </button>
+      <button onclick="window.open('https://www.gov.mb.ca/wildfire/', '_blank')" class="info-button">
+        ℹ Wildfire Resources
+      </button>
     </div>
+
   </div>
 
   <div id="map"></div>
+
+  <script>
+    // 🕒 Show today's date as "Last updated"
+    const updated = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('last-updated').textContent =
+        `Last updated: ${updated.toLocaleDateString(undefined, options)}`;
+    });
+  </script>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="map.js"></script>
