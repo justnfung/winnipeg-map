@@ -1,12 +1,14 @@
 body {
-  overflow: hidden;
-  height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
 }
 
+
 #map {
-  height: 83vh;
+  height: calc(100vh - 170px); /* adjust this value as needed */
   width: 100%;
 }
+
 
 .main-heading {
   text-align: center;
