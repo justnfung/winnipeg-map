@@ -73,6 +73,33 @@ strong {
   margin-top: -20px;
   margin-bottom: 20px;
 }
+.cbc-button {
+  display: inline-block;
+  text-align: center;
+  margin: 16px auto -8px;
+  padding: 4px 10px;
+  font-size: 12px;                     /* Smaller text */
+  font-style: italic;
+  font-weight: 300;                    /* Regular weight */
+  font-family: 'Cheltenham', serif;
+  color: #0056c9;
+  background-color: #e0f0ff;
+  border: 1px solid #a3c9ef;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  display: block;
+  width: fit-content;
+}
+
+.cbc-button:hover {
+  background-color: #d0e9ff;
+  border-color: #7ab1e6;
+  color: #003d91;
+}
+
+
 
 /* =========================
    Subbar & Buttons
@@ -475,14 +502,17 @@ body {
   .submit-button,
   .info-button {
     font-size: 10px;
-    padding: 4px 8px;
+    padding: 2px 8px;
   }
     .last-updated {
     font-size: 12px; /* 👈 Change this to whatever size you want */
     margin-top: -10px; /* Optional: tweak spacing for smaller screens */
     margin-bottom: 10px;
   }
-
+  .legend {
+  justify-content: center;
+  width: 100%;
+  }
   .legend span {
     font-size: 10px;
     font-weight: 500;
