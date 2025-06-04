@@ -70,12 +70,18 @@ function fetchResources() {
               <div class="popup-content">
                 <div class="popup-header">
                   <strong>${row.Name}</strong><br>
-                  <em>${row.Category}</em>
+                  <em>
+                    ${row.Category}
+                    ${row.Hours ? ` | ${row.Hours}` : ""}
+                  </em>
                 </div>
-                ${row.Hours ? `<div><b>Hours:</b> ${row.Hours}</div>` : ""}
-                ${row.Description ? `<div><b>Description:</b> ${row.Description}</div>` : ""}
-                ${row["Address Link"] ? `<div><b>Address:</b> ${row["Address Link"]}</div>` : ""}
-                ${row.Phone ? `<div><b>Phone:</b> ${row.Phone}</div>` : ""}
+                    ${row.Description ? `<div><b>Description:</b> ${row.Description.replace(/\n/g, '<br>')}</div>` : ""}
+                    ${(row.Phone || row["Address Link"]) ? `
+                      <div class="popup-meta">
+                        ${row.Phone ? `<a href="tel:${row.Phone.replace(/\D/g, '')}">${row.Phone}</a>` : ""}
+                        ${(row.Phone && row["Address Link"]) ? " | " : ""}
+                        ${row["Address Link"] || ""}
+                      </div>` : ""}                              
               </div>
             `);
           if (!grouped[category])
@@ -223,4 +229,3 @@ document.getElementById("locate-btn").addEventListener("click", () => {
   document.getElementById("contact-btn").addEventListener("click", () => {
   window.location.href = "mailto:justinfung.ca@gmail.com?subject=Community%20Compass%20Inquiry";
 });
-

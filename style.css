@@ -341,7 +341,7 @@ body {
 }
 
 .leaflet-popup-content strong {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
 }
 
@@ -360,11 +360,21 @@ body {
 }
 
 .leaflet-popup-content .popup-header {
+  font-size: 12px;
   margin-bottom: 10px;
 }
 
 .leaflet-popup-content img {
   margin-top: 8px;
+}
+.popup-meta {
+  font-size: 12px;
+  color: #555;
+  margin-top: 10px;
+}
+.popup-meta a {
+  color: #007bff;
+  text-decoration: underline;
 }
 
 /* =========================
@@ -502,8 +512,8 @@ body {
   .subbar-links button,
   .submit-button,
   .info-button {
-    font-size: 10px;
-    padding: 2px 8px;
+    font-size: 9px;
+    padding: 6px 4px;
   }
     .last-updated {
     font-size: 12px; /* 👈 Change this to whatever size you want */
@@ -515,7 +525,7 @@ body {
   width: 100%;
   }
   .legend span {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
     font-style: italic;
     padding-bottom: 10px;
