@@ -56,7 +56,6 @@ function fetchResources() {
   fetch("https://opensheet.elk.sh/1saesqAewFioAJss_sjoYfVwYNuTCiWlgSoMWLiYw8WE/Sheet1")
     .then((res) => res.json())
     .then((data) => {
-       console.log("Fetched data:", data);
       const grouped = {};
 
       data.forEach((row) => {

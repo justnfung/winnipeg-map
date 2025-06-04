@@ -188,7 +188,7 @@ body {
 
 .map-area {
   flex: 1;
-  height: calc(100vh - 120px); /* slightly less than before */
+  height: calc(100vh - 120px); 
   display: flex;
   overflow: hidden;
 }
@@ -200,7 +200,7 @@ body {
   height: 100%;
   width: 100%;
   position: relative;
-  overflow: auto; /* Ensures map doesn't shift */
+  overflow: auto; 
 }
 
 #map {
@@ -259,9 +259,10 @@ body {
 
 .category-emergency-shelter { background-color: #d9534f; }
 .category-donation-point { background-color: #5cb85c; }
-.category-medical-aid { background-color: #5bc0de; }
+.category-community-event { background-color: #5bc0de; }
 .category-animal-shelter { background-color: #f0ad4e; }
 .category-info-station { background-color: #f7a35c; }
+
 
 .category-icon {
   width: 16px;
@@ -277,7 +278,7 @@ body {
 }
 
 .category-items {
-  max-height: 1000px; /* big enough to contain most content */
+  max-height: 1000px;
   overflow: hidden;
   transition: max-height 0.4s ease;
 }
