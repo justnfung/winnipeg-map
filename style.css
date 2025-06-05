@@ -16,11 +16,13 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  min-height: 100vh;
   font-family: 'Cheltenham', serif;
   font-weight: 300;
+  display: flex;
+  flex-direction: column;
   overscroll-behavior: contain;
 }
-
 
 @font-face {
   font-family: 'Cheltenham';
@@ -73,33 +75,39 @@ strong {
   margin-top: -20px;
   margin-bottom: 20px;
 }
-.cbc-button {
-  display: inline-block;
-  text-align: center;
-  margin: 16px auto -8px;
-  padding: 4px 10px;
-  font-size: 12px;                     /* Smaller text */
-  font-style: italic;
-  font-weight: 300;                    /* Regular weight */
+
+/* =========================
+   Layout & Map
+========================= */
+.map-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+#map {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.resource-list {
+  width: 400px;
+  max-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #fafafa;
+  border-left: 2px solid #ccc;
   font-family: 'Cheltenham', serif;
-  color: #0056c9;
-  background-color: #e0f0ff;
-  border: 1px solid #a3c9ef;
-  border-radius: 6px;
-  text-decoration: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  display: block;
-  width: fit-content;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.05);
 }
-
-.cbc-button:hover {
-  background-color: #d0e9ff;
-  border-color: #7ab1e6;
-  color: #003d91;
-}
-
-
 
 /* =========================
    Subbar & Buttons
@@ -178,64 +186,7 @@ strong {
 }
 
 /* =========================
-   Layout and Map
-========================= */
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.map-area {
-  flex: 1;
-  height: calc(100vh - 120px); 
-  display: flex;
-  overflow: hidden;
-}
-
-
-
-.map-container {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  position: relative;
-  overflow: auto; 
-}
-
-#map {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.resource-list {
-  width: 400px;
-  max-width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  background-color: #fafafa;
-  border-left: 2px solid #ccc;
-  font-family: 'Cheltenham', serif;
-  font-size: 14px;
-  line-height: 1.4;
-  box-shadow: -2px 0 4px rgba(0,0,0,0.05);
-}
-
-.sidebar-tip {
-  background: #efefef;
-  color: #333;
-  padding: 12px 20px;
-  font-size: 14px;
-  font-style: italic;
-  border-bottom: 1px solid #ddd;
-}
-
-/* =========================
-   Resource Entries
+   Resource List Styling
 ========================= */
 .category-header {
   display: flex;
@@ -246,28 +197,19 @@ body {
   font-weight: 700;
   color: white;
   cursor: pointer;
-  border-top: 4px solid rgba(255, 255, 255, 0.3); /* separator */
+  border-top: 4px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Optional: tighter spacing between icon and text */
 .category-icon {
-  width: 18px;
-  height: 28px;
+  width: 16px;
+  height: 26px;
   flex-shrink: 0;
 }
-
 
 .category-emergency-shelter { background-color: #d9534f; }
 .category-donation-point { background-color: #5cb85c; }
 .category-community-event { background-color: #5bc0de; }
 .category-animal-shelter { background-color: #f0ad4e; }
-.category-info-station { background-color: #f7a35c; }
-
-
-.category-icon {
-  width: 16px;
-  height: 26px;
-}
 
 .collapse-toggle {
   font-size: 12px;
@@ -287,7 +229,6 @@ body {
   max-height: 0;
   padding: 0;
 }
-
 
 .resource-entry {
   padding: 14px 20px;
@@ -328,9 +269,8 @@ body {
   text-align: center;
 }
 
-
 /* =========================
-   Leaflet Popups
+   Leaflet Popup Styling
 ========================= */
 .leaflet-popup-content {
   font-family: 'Cheltenham', serif;
@@ -367,11 +307,13 @@ body {
 .leaflet-popup-content img {
   margin-top: 8px;
 }
+
 .popup-meta {
   font-size: 12px;
   color: #555;
   margin-top: 10px;
 }
+
 .popup-meta a {
   color: #007bff;
   text-decoration: underline;
@@ -400,7 +342,7 @@ body {
   padding: 30px;
   max-width: 450px;
   text-align: center;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .modal-header {
@@ -465,9 +407,12 @@ body {
   background-color: #eee;
 }
 
+/* =========================
+   Map Controls
+========================= */
 .map-buttons {
   position: absolute;
-  bottom: 30px;      /* was top: 100px — now bottom */
+  bottom: 30px;
   left: 30px;
   z-index: 1000;
   display: flex;
@@ -480,12 +425,12 @@ body {
   font-size: 18px;
   font-weight: bold;
   padding: 8px 10px;
-  background: #ffffff;           /* brighter background */
-  border: 2px solid #555;        /* darker border */
+  background: #ffffff;
+  border: 2px solid #555;
   border-radius: 6px;
-  color: #222;                   /* darker text */
+  color: #222;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   transition: background 0.2s ease;
 }
 
@@ -493,6 +438,9 @@ body {
   background: #f0f0f0;
 }
 
+/* =========================
+   Responsive Design
+========================= */
 @media (max-width: 768px) {
   .main-heading {
     font-size: 1.5em;
@@ -505,35 +453,36 @@ body {
     font-size: 9px;
     padding: 4px 4px;
   }
-    .last-updated {
-    font-size: 12px; /* 👈 Change this to whatever size you want */
-    margin-top: -10px; /* Optional: tweak spacing for smaller screens */
+
+  .last-updated {
+    font-size: 9px;
+    margin-top: -10px;
     margin-bottom: 10px;
   }
+
   .legend {
-  justify-content: center;
-  width: 100%;
+    justify-content: center;
+    width: 100%;
   }
+
   .legend span {
     font-size: 9.5px;
     font-weight: 500;
     font-style: italic;
     padding-bottom: 10px;
   }
+
   .legend img {
-  width: 8px;
-  height: 10px;
-  margin-right: 4px;
+    width: 8px;
+    height: 10px;
+    margin-right: 4px;
   }
+
   .map-buttons {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+    top: 10px;
+    left: 10px;
+  }
+
   .map-buttons button {
     font-size: 16px;
     padding: 6px 8px;
@@ -553,13 +502,8 @@ body {
     padding: 8px 14px;
     min-width: 120px;
   }
-  .map-area {
-    flex-direction: column;
-    height: auto;
-  }
 
   .map-container {
-    display: flex;
     flex-direction: column;
     height: auto;
   }
@@ -580,4 +524,3 @@ body {
     box-shadow: none;
   }
 }
-
