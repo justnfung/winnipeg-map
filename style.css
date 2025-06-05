@@ -438,7 +438,7 @@ body {
 .location-btn {
   font-family: 'Cheltenham', serif;
   font-size: 16px;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 8px;
   border: 1px solid #ccc;
   cursor: pointer;
@@ -463,16 +463,6 @@ body {
 
 .location-btn.secondary:hover {
   background-color: #eee;
-}
-
-.map-buttons #zoom-out-btn {
-  background-color: #eee;
-  color: #333;
-  border: 2px solid #666;
-}
-
-.map-buttons #zoom-out-btn:hover {
-  background-color: #ddd;
 }
 
 .map-buttons {
@@ -513,7 +503,7 @@ body {
   .submit-button,
   .info-button {
     font-size: 9px;
-    padding: 6px 4px;
+    padding: 4px 4px;
   }
     .last-updated {
     font-size: 12px; /* 👈 Change this to whatever size you want */
@@ -525,7 +515,7 @@ body {
   width: 100%;
   }
   .legend span {
-    font-size: 9px;
+    font-size: 9.5px;
     font-weight: 500;
     font-style: italic;
     padding-bottom: 10px;
@@ -535,6 +525,15 @@ body {
   height: 10px;
   margin-right: 4px;
   }
+  .map-buttons {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
   .map-buttons button {
     font-size: 16px;
     padding: 6px 8px;
@@ -566,8 +565,8 @@ body {
   }
 
   #map {
-    height: 45vh !important;
-    min-height: 300px;
+    height: 30vh !important;
+    min-height: 250px;
   }
 
   .resource-list {
@@ -581,3 +580,4 @@ body {
     box-shadow: none;
   }
 }
+

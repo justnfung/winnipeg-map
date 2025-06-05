@@ -2,7 +2,7 @@
 const DEFAULT_CENTER = [49.8951, -97.1384];
 const DEFAULT_ZOOM = window.innerWidth <= 1000 ? 15 : 12;
 
-const map = L.map("map").setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+const map = L.map("map", { zoomControl: false }).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
 
 const isMobile = window.innerWidth <= 1000;
 
@@ -109,7 +109,22 @@ function fetchResources() {
       }
 
       // Render each grouped category
-      for (const [category, group] of Object.entries(grouped)) {
+          const categoryOrder = [
+        "Community Event",
+        "Donation Point",
+        "Emergency Shelter",
+        "Animal Shelter"
+      ];
+
+      // Sort categories by your custom order
+      const sortedEntries = Object.entries(grouped).sort(([a], [b]) => {
+        const indexA = categoryOrder.indexOf(a);
+        const indexB = categoryOrder.indexOf(b);
+        return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+      });
+
+      // Render each category in order
+      for (const [category, group] of sortedEntries) {
         group.items.sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
 
         const section = document.createElement("div");
@@ -120,11 +135,11 @@ function fetchResources() {
         header.innerHTML = `
           <img src="${group.icon}" alt="" class="category-icon">
           <span class="category-title">${category}</span>
-          <span class="collapse-toggle">Click to collapse</span>
+          <span class="collapse-toggle">Click to open/collapse</span>
         `;
 
         const content = document.createElement("div");
-        content.className = "category-items";
+        content.className = "category-items collapsed";
 
         group.items.forEach(({ name, marker, distance, address }) => {
           const listItem = document.createElement("div");
@@ -174,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
             weight: 1,
             opacity: 1,
             fillOpacity: 0.8,
-          }).addTo(map).bindPopup("You are here");
+          }).addTo(map).bindPopup("You are here :)");
 
           overlay.style.display = "none";
 
@@ -202,6 +217,14 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.innerHTML = `<p>Your browser does not support geolocation.</p>`;
     fetchResources();
   }
+});
+
+//Zoom in
+document.getElementById("zoom-in-btn").addEventListener("click", () => {
+  const currentZoom = map.getZoom();
+  const newZoom = Math.min(currentZoom + 2, map.getMaxZoom());
+  const targetCenter = map.getCenter();
+  map.setView(targetCenter, newZoom, { animate: true });
 });
 
 

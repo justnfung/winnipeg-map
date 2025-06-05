@@ -18,17 +18,11 @@
   <link rel="stylesheet" href="style.css">
   <meta name="description" content="An interactive map of emergency shelters, donation points, and community resources in Winnipeg.">
 
-</head>
-<body>
-  <p class="cbc-button">
-    <a href="https://www.youtube.com/watch?v=nxyEAMdbMCM&t=8928s" target="_blank">
-      Check out my CBC interview!
-    </a>
-  </p>
-
   <h1 class="main-heading">Winnipeg Community Compass</h1>
-  <p class="last-updated">Last updated: June 4, 2025</p>
-
+  <p class="last-updated">
+    Last updated: June 4, 2025 |
+    <a href="https://www.youtube.com/watch?v=nxyEAMdbMCM&t=8928s" target="_blank">Check out my CBC interview!</a>
+  </p>
 
   <div class="subbar">
     <div class="legend">
@@ -64,6 +58,7 @@
 <div class="map-container">
   <div id="map">
     <div id="map-buttons" class="map-buttons">
+      <button id="zoom-in-btn" title="Zoom In">+</button>
       <button id="zoom-out-btn" title="Zoom Out">−</button>
       <button id="locate-btn" title="Go to My Location">📍</button>
     </div>
