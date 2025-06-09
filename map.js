@@ -182,52 +182,34 @@ function fetchResources() {
 // Handle location prompt and map initialization
 // Includes fallback if user denies or device lacks geolocation
 
-document.addEventListener("DOMContentLoaded", () => {
-  const overlay = document.getElementById("overlay");
-  const enableBtn = document.getElementById("enable-location");
-  const declineBtn = document.getElementById("decline-location");
 
-  if (navigator.geolocation) {
-    enableBtn.addEventListener("click", () => {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          userLocation = [pos.coords.latitude, pos.coords.longitude];
-          const userMarker = L.circleMarker(userLocation, {
-            radius: 8,
-            fillColor: "#007bff",
-            color: "#007bff",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8,
-          }).addTo(map).bindPopup("You are here :)");
+// Instead of relying on user geolocation, set a fixed demo location
+const overlay = document.getElementById("overlay");
+const enableBtn = document.getElementById("enable-location");
+const declineBtn = document.getElementById("decline-location");
 
-          overlay.style.display = "none";
+enableBtn.addEventListener("click", () => {
+  userLocation = [49.892763459348295, -97.14342178748507]; // Set demo location (e.g., Winnipeg City Hall)
+  
+  const userMarker = L.circleMarker(userLocation, {
+    radius: 8,
+    fillColor: "#007bff",
+    color: "#007bff",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8,
+  }).addTo(map).bindPopup("Demo location");
 
-          setTimeout(() => {
-            map.invalidateSize(); // Force map to re-render properly
-            map.setView(userLocation, 13, { animate: true });
-            userMarker.openPopup();
-            fetchResources();
-          }, 300);
-        },
-        (err) => {
-          console.warn("⚠️ Location access denied. Showing unsorted locations.");
-          overlay.style.display = "none";
-          fetchResources();
-        },
-        { enableHighAccuracy: true }
-      );
-    });
+  overlay.style.display = "none";
 
-    declineBtn.addEventListener("click", () => {
-      overlay.style.display = "none";
-      fetchResources();
-    });
-  } else {
-    overlay.innerHTML = `<p>Your browser does not support geolocation.</p>`;
+  setTimeout(() => {
+    map.invalidateSize();
+    map.setView(userLocation, 13, { animate: true });
+    userMarker.openPopup();
     fetchResources();
-  }
+  }, 300);
 });
+
 
 // Manual Zoom In button handler
 // Increases zoom by 2 levels (capped to maxZoom)
