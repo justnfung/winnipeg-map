@@ -1,26 +1,23 @@
-// Set the default map center and zoom level based on device width
+
 const DEFAULT_CENTER = [49.8951, -97.1384];
 const DEFAULT_ZOOM = window.innerWidth <= 1000 ? 15 : 12;
 
-// Initialize the Leaflet map without default zoom controls
 const map = L.map("map", { zoomControl: false }).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
 
 const isMobile = window.innerWidth <= 1000;
 
-// Adjust marker icon size and anchor points for mobile vs desktop
+
 const markerSize = isMobile ? [20, 32] : [25, 41];
 const shadowSize = isMobile ? [27, 27] : [41, 41];
 const iconAnchor = isMobile ? [17, 55] : [12, 41];
 const popupAnchor = isMobile ? [1, -40] : [1, -34];
 
-// Load the tile layer from CARTO
 L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
   attribution: '&copy; <a href="https://carto.com/">CARTO</a> © OpenStreetMap contributors',
   subdomains: "abcd",
   maxZoom: 19,
 }).addTo(map);
 
-// Custom icons per resource category
 const markerIcons = {
   "Emergency Shelter": "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
   "Donation Point": "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
@@ -28,7 +25,6 @@ const markerIcons = {
   "Animal Shelter": "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
 };
 
-// Build Leaflet icon objects
 const icons = {};
 for (const category in markerIcons) {
   icons[category] = L.icon({
@@ -44,7 +40,6 @@ for (const category in markerIcons) {
 const listContainer = document.getElementById("resource-list");
 let userLocation = null;
 
-// Haversine formula to calculate distance between two lat/lng points in km
 function getDistanceKm(lat1, lon1, lat2, lon2) {
   const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -57,7 +52,6 @@ function getDistanceKm(lat1, lon1, lat2, lon2) {
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
-// Fetch resource data from Google Sheets API wrapper
 function fetchResources() {
   fetch("https://opensheet.elk.sh/1saesqAewFioAJss_sjoYfVwYNuTCiWlgSoMWLiYw8WE/Sheet1")
     .then((res) => res.json())
@@ -72,25 +66,24 @@ function fetchResources() {
         const markerIcon = markerIcons[category] || markerIcons["Emergency Shelter"];
 
         if (!isNaN(lat) && !isNaN(lng)) {
-          const marker = L.marker([lat, lng], { icon }).addTo(map).bindPopup(`
-            <div class="popup-content">
-              <div class="popup-header">
-                <strong>${row.Name}</strong><br>
-                <em>
-                  ${row.Category}
-                  ${row.Hours ? ` | ${row.Hours}` : ""}
-                </em>
+            const marker = L.marker([lat, lng], { icon }).addTo(map).bindPopup(`
+              <div class="popup-content">
+                <div class="popup-header">
+                  <strong>${row.Name}</strong><br>
+                  <em>
+                    ${row.Category}
+                    ${row.Hours ? ` | ${row.Hours}` : ""}
+                  </em>
+                </div>
+                    ${row.Description ? `<div><b>Description:</b> ${row.Description.replace(/\n/g, '<br>')}</div>` : ""}
+                    ${(row.Phone || row["Address Link"]) ? `
+                      <div class="popup-meta">
+                        ${row.Phone ? `<a href="tel:${row.Phone.replace(/\D/g, '')}">${row.Phone}</a>` : ""}
+                        ${(row.Phone && row["Address Link"]) ? " | " : ""}
+                        ${row["Address Link"] || ""}
+                      </div>` : ""}                              
               </div>
-              ${row.Description ? `<div><b>Description:</b> ${row.Description.replace(/\n/g, '<br>')}</div>` : ""}
-              ${(row.Phone || row["Address Link"]) ? `
-                <div class="popup-meta">
-                  ${row.Phone ? `<a href="tel:${row.Phone.replace(/\D/g, '')}">${row.Phone}</a>` : ""}
-                  ${(row.Phone && row["Address Link"]) ? " | " : ""}
-                  ${row["Address Link"] || ""}
-                </div>` : ""}
-            </div>
-          `);
-
+            `);
           if (!grouped[category])
             grouped[category] = { icon: markerIcon, items: [] };
 
@@ -107,7 +100,7 @@ function fetchResources() {
         }
       });
 
-      // Insert a tip for the user only if categories exist
+      // Only insert tip if there’s grouped data
       if (listContainer && Object.keys(grouped).length > 0) {
         const tip = document.createElement("div");
         tip.className = "sidebar-tip-top";
@@ -115,22 +108,22 @@ function fetchResources() {
         listContainer.insertBefore(tip, listContainer.firstChild);
       }
 
-      // Optional custom display order
-      const categoryOrder = [
+      // Render each grouped category
+          const categoryOrder = [
         "Community Event",
         "Donation Point",
         "Emergency Shelter",
         "Animal Shelter"
       ];
 
-      // Sort categories based on predefined order
+      // Sort categories by your custom order
       const sortedEntries = Object.entries(grouped).sort(([a], [b]) => {
         const indexA = categoryOrder.indexOf(a);
         const indexB = categoryOrder.indexOf(b);
         return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
       });
 
-      // Render each category
+      // Render each category in order
       for (const [category, group] of sortedEntries) {
         group.items.sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
 
@@ -179,40 +172,54 @@ function fetchResources() {
     });
 }
 
-// Handle location prompt and map initialization
-// Includes fallback if user denies or device lacks geolocation
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("overlay");
+  const enableBtn = document.getElementById("enable-location");
+  const declineBtn = document.getElementById("decline-location");
 
+  if (navigator.geolocation) {
+    enableBtn.addEventListener("click", () => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          userLocation = [pos.coords.latitude, pos.coords.longitude];
+          const userMarker = L.circleMarker(userLocation, {
+            radius: 8,
+            fillColor: "#007bff",
+            color: "#007bff",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8,
+          }).addTo(map).bindPopup("You are here :)");
 
-// Instead of relying on user geolocation, set a fixed demo location
-const overlay = document.getElementById("overlay");
-const enableBtn = document.getElementById("enable-location");
-const declineBtn = document.getElementById("decline-location");
+          overlay.style.display = "none";
 
-enableBtn.addEventListener("click", () => {
-  userLocation = [49.892763459348295, -97.14342178748507]; // Set demo location (e.g., Winnipeg City Hall)
-  
-  const userMarker = L.circleMarker(userLocation, {
-    radius: 8,
-    fillColor: "#007bff",
-    color: "#007bff",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8,
-  }).addTo(map).bindPopup("Demo location");
+          setTimeout(() => {
+            map.invalidateSize();                    // ⬅️ force correct sizing
+            map.setView(userLocation, 13, { animate: true });
+            userMarker.openPopup();
+            fetchResources();                        // ⬅️ call AFTER view set
+          }, 300);
+        },
+        (err) => {
+          console.warn("⚠️ Location access denied. Showing unsorted locations.");
+          overlay.style.display = "none";
+          fetchResources();
+        },
+        { enableHighAccuracy: true }
+      );
+    });
 
-  overlay.style.display = "none";
-
-  setTimeout(() => {
-    map.invalidateSize();
-    map.setView(userLocation, 13, { animate: true });
-    userMarker.openPopup();
+    declineBtn.addEventListener("click", () => {
+      overlay.style.display = "none";
+      fetchResources();
+    });
+  } else {
+    overlay.innerHTML = `<p>Your browser does not support geolocation.</p>`;
     fetchResources();
-  }, 300);
+  }
 });
 
-
-// Manual Zoom In button handler
-// Increases zoom by 2 levels (capped to maxZoom)
+//Zoom in
 document.getElementById("zoom-in-btn").addEventListener("click", () => {
   const currentZoom = map.getZoom();
   const newZoom = Math.min(currentZoom + 2, map.getMaxZoom());
@@ -220,16 +227,19 @@ document.getElementById("zoom-in-btn").addEventListener("click", () => {
   map.setView(targetCenter, newZoom, { animate: true });
 });
 
-// Manual Zoom Out button handler
-// Decreases zoom by 2 levels (not below 5)
+
+// Add zoom out
 document.getElementById("zoom-out-btn").addEventListener("click", () => {
   const currentZoom = map.getZoom();
-  const newZoom = Math.max(currentZoom - 2, 5);
-  const targetCenter = map.getCenter();
+  const newZoom = Math.max(currentZoom - 2, 5); // Don't zoom out too far
+
+  const targetCenter = map.getCenter(); // ✅ Always use the current view center
   map.setView(targetCenter, newZoom, { animate: true });
 });
 
-// Button to recenter map to user's location (if available)
+
+
+// Add recenter to user location
 document.getElementById("locate-btn").addEventListener("click", () => {
   if (userLocation) {
     map.setView(userLocation, 15);
@@ -238,8 +248,7 @@ document.getElementById("locate-btn").addEventListener("click", () => {
   }
 });
 
-// Button to trigger email client for contact
-// Opens default email app with prefilled subject
-document.getElementById("contact-btn").addEventListener("click", () => {
+//Contact button
+  document.getElementById("contact-btn").addEventListener("click", () => {
   window.location.href = "mailto:justinfung.ca@gmail.com?subject=Community%20Compass%20Inquiry";
 });
